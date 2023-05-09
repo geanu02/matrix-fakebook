@@ -1,11 +1,16 @@
-from flask import render_template
+from flask import render_template, redirect, flash, url_for
 
 from . import bp
 from app.forms import RegisterForm
 
-@bp.route('/register')
+@bp.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
+    if form.validate_on_submit():
+        user = form.username.data
+        email = form.email.data
+        flash(f"Request for {user}: {email} successfully registered!")
+        return redirect(url_for("main.home"))
     return render_template(
         'register.jinja',
         title="Matrix Fakebook: Register Page",
