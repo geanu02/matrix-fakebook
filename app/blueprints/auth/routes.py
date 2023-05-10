@@ -14,7 +14,8 @@ def register():
         user_check = User.query.filter_by(username=username).first()
         email = User.query.filter_by(email=form.email.data).first()
         if not user_check and not email:
-            u = User(username=username,email=form.email.data,password=form.password.data)
+            u = User(username=username,email=form.email.data)
+            u.password = u.hash_password(form.password.data)
             u.commit()
             flash(f"Request for {username}: {email} successfully registered!")
             return redirect(url_for("main.home"))

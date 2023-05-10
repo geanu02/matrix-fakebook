@@ -1,3 +1,7 @@
 .err-msg {
     color: red;
 }
+
+.li_item {
+    list-style-type: none;
+}

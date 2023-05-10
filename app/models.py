@@ -1,3 +1,5 @@
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from app import db
 
 class User(db.Model):
@@ -12,3 +14,9 @@ class User(db.Model):
     def commit(self):
         db.session.add(self)
         db.session.commit()
+
+    def hash_password(self, password):
+        return generate_password_hash(password)
+
+    def check_password(self, password_input):
+        return check_password_hash(self.password, password_input)
