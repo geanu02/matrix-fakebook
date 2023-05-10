@@ -4,7 +4,7 @@ from app.models import User
 from app import db
 
 from . import bp
-from app.forms import RegisterForm
+from app.forms import RegisterForm, SigninForm
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -17,21 +17,30 @@ def register():
             u = User(username=username,email=form.email.data)
             u.password = u.hash_password(form.password.data)
             u.commit()
-            flash(f"Request for {username}: {email} successfully registered!")
+            flash(f"Request for {username}: {email} successfully registered!", "success")
             return redirect(url_for("main.home"))
         if user_check:
-            flash(f"{username} already taken. Try again.")
+            flash(f"{username} already taken. Try again.", "warning")
         else:
-            flash(f"{form.email.data} already taken. Try again.")
+            flash(f"{form.email.data} already taken. Try again.", "warning")
     return render_template(
         'register.jinja',
         title="Matrix Fakebook: Register Page",
         form=form
     )
 
-@bp.route('/signin')
+@bp.route('/signin', methods=['GET', 'POST'])
 def signin():
+    form = SigninForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(form.username.data).first()
+        if user and user.check_password(form.password.data):
+            flash(f"{form.username.data} signed in.", "success")
+            return redirect(url_for('main.home'))
+        else:
+            print(f"{form.username.data} does not exist or incorrect password.", "warning")
     return render_template(
         'signin.jinja',
-        title="Matrix Fakebook: Signin Page"
+        title="Matrix Fakebook: Signin Page",
+        form=form
     )

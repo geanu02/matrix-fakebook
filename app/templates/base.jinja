@@ -22,11 +22,11 @@
 
     <div class="container">
 
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <ul>
-        {% for msg in messages %}
-        <li class="alert alert-warning alert-dismissible fade show li_item" role="alert">{{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <ul class="mt-2">
+        {% for category, msg in messages %}
+        <li class="alert alert-{{ category }} alert-dismissible fade show li_item" role="alert">{{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </li>
         {% endfor %}
         </ul>
