@@ -4,16 +4,12 @@
 
 <form action="" method="POST" novalidate>
 
-    <h2>Sign In Page</h2>
+    <h2>Post</h2>
     {{ form.hidden_tag() }}
     <p>
-        {{ form.username.label }}<br>
-        {{ form.username(size=32) }}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(size=32) }}
-        {% for error in form.password.errors %}
+        {{ form.body.label }}<br>
+        {{ form.body(size=32) }}
+        {% for error in form.body.errors %}
             <span class="err-msg">{{ error }}</span>
         {% endfor %}
     </p>

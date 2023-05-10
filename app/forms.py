@@ -14,3 +14,8 @@ class SigninForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
     submit = SubmitField('Sign In')
+
+
+class PostForm(FlaskForm):
+    body = StringField('body')
+    submit = SubmitField('Publish')

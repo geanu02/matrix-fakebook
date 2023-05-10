@@ -1,7 +1,6 @@
 from flask import render_template, redirect, flash, url_for
-
+from flask_login import login_user
 from app.models import User
-from app import db
 
 from . import bp
 from app.forms import RegisterForm, SigninForm
@@ -33,12 +32,13 @@ def register():
 def signin():
     form = SigninForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
             flash(f"{form.username.data} signed in.", "success")
-            return redirect(url_for('main.home'))
+            login_user(user)
+            return redirect(url_for("main.home"))
         else:
-            print(f"{form.username.data} does not exist or incorrect password.", "warning")
+            flash(f"{form.username.data} does not exist or incorrect password.", "warning")
     return render_template(
         'signin.jinja',
         title="Matrix Fakebook: Signin Page",
