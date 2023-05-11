@@ -1,5 +1,5 @@
 from flask import render_template, redirect, flash, url_for
-from flask_login import login_user
+from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User
 
 from . import bp
@@ -7,6 +7,8 @@ from app.forms import RegisterForm, SigninForm
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.page'))
     form = RegisterForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -30,6 +32,8 @@ def register():
 
 @bp.route('/signin', methods=['GET', 'POST'])
 def signin():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.page'))
     form = SigninForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -44,3 +48,9 @@ def signin():
         title="Matrix Fakebook: Signin Page",
         form=form
     )
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('main.home'))

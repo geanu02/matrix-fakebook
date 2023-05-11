@@ -38,7 +38,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
 
     def __repr__(self):
-        return f"Post: {self.body}"
+        return f"<Post: {self.body}>"
     
     def commit(self):
         db.session.add(self)

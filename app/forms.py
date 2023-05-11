@@ -19,3 +19,8 @@ class SigninForm(FlaskForm):
 class PostForm(FlaskForm):
     body = StringField('body')
     submit = SubmitField('Publish')
+
+
+class UserSearchForm(FlaskForm):
+    user = StringField('user', validators=[DataRequired()])
+    submit = SubmitField('Search')

@@ -1,6 +1,13 @@
-from flask import render_template
+from flask import render_template, g
+
 
 from . import bp
+from app import app
+from app.forms import UserSearchForm
+
+@app.before_request
+def before_request():
+    g.user_search_form = UserSearchForm()
 
 @bp.route('/')
 def home():
@@ -12,7 +19,8 @@ def home():
         'index.jinja', 
         title="Matrix Fakebook Homepage", 
         instructors=matrix['instructors'],
-        students=matrix['students']
+        students=matrix['students'],
+        user_search_form=g.user_search_form
     )
 
 @bp.route('/about')
@@ -20,5 +28,6 @@ def about():
     
     return render_template(
         'about.jinja',
-        title="Matrix Fakebook: About Page"
+        title="Matrix Fakebook: About Page",
+        user_search_form=g.user_search_form
     )

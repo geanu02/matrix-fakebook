@@ -33,12 +33,11 @@
         {% endif %}
         {% endwith %}
         
-        {% if current_user.is_autheticated %}
+        {% if current_user.is_authenticated %}
             <h3>Welcome, {{ current_user.username }}!</h3>
+            {% include './includes/user_search.jinja' %}
         {% endif %}
-
         <h1>Matrix Fakebook Homepage</h1>
-
         {% block content %}{% endblock content %}
 
     </div>
