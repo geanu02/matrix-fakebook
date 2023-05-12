@@ -22,14 +22,14 @@ def api_posts(user):
 @bp.get('/posts/<username>')
 @token_required
 def user_posts(user, username):
-    user = User.query.filter_by(username=username)
-    if user:
+    u = User.query.filter_by(username=username)
+    if u:
         return jsonify([{
                 'id': post.id,
                 'body': post.body,
                 'timestamp': post.timestamp,
                 'author': post.user_id
-            } for post in user.posts]), 200
+            } for post in u.posts]), 200
     return jsonify([{'message':'Invalid username.'}]), 404
 
 # Send Single Post

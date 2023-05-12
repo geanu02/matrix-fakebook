@@ -6,7 +6,6 @@ def token_required(flask_route):
     @wraps(flask_route)
     def wrapper(*args,**kwargs):
         if 'x-access-token' in request.headers:
-            # bearer <token>
             try:
                 token = request.headers['x-access-token'].split()[1]
                 user = User.query.filter_by(token=token).first()
