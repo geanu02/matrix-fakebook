@@ -11,7 +11,7 @@ def verify_user():
     password = content['password']
     user = User.query.filter_by(username=username).first()
     if user and user.check_password(password):
-        return jsonify([{'userid': user.user_id}])
+        return jsonify([{'user token': user.token}])
     return jsonify({'message': 'Invalid User Info'})
 # Register User
 @bp.post('/register-user')
@@ -28,5 +28,6 @@ def register_user():
         return jsonify([{'message': 'Email taken. Try again.'}])
     user = User(email=email, username=username)
     user.password = user.hash_password(password)
+    user.add_token()
     user.commit()
     return jsonify([{'message': f"{user.username} registered!"}])

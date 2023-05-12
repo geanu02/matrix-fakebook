@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
+from secrets import token_urlsafe
 
 from app import db, login
 
@@ -13,6 +14,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String, unique=True)
     email = db.Column(db.String, unique=True)
     password = db.Column(db.String)
+    token = db.Column(db.String(250), unique=True)
     posts = db.relationship('Post', backref='Author', lazy=True)
 
     def __repr__(self):
@@ -27,6 +29,9 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password_input):
         return check_password_hash(self.password, password_input)
+
+    def add_token(self):
+        setattr(self, 'token', token_urlsafe(32))
     
     def get_id(self):
         return str(self.user_id)

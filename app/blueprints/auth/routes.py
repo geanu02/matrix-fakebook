@@ -8,7 +8,7 @@ from app.forms import RegisterForm, SigninForm
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('main.page'))
+        return redirect(url_for('main.home'))
     form = RegisterForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -17,6 +17,7 @@ def register():
         if not user_check and not email:
             u = User(username=username,email=form.email.data)
             u.password = u.hash_password(form.password.data)
+            u.add_token()
             u.commit()
             flash(f"Request for {username}: {email} successfully registered!", "success")
             return redirect(url_for("main.home"))
