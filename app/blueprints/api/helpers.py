@@ -12,8 +12,8 @@ def token_required(flask_route):
                 user = User.query.filter_by(token=token).first()
                 if user:
                     return flask_route(user,*args,**kwargs)
-                return jsonify([{"message": "Access denied. Invalid token."}]), 401
+                return jsonify([{"message": "Access denied. 'user' not found."}]), 401
             except:
-                return jsonify([{"message": "Access denied. Invalid token."}]), 401
-        return jsonify([{"message": "Access denied. Missing token."}]), 401
+                return jsonify([{"message": "Access denied. Exception."}]), 401
+        return jsonify([{"message": "Access denied. x-access-token not in headers."}]), 401
     return wrapper
